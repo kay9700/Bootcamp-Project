@@ -1,0 +1,15 @@
+<template>
+    <div class="slds-size_4-of-4 slds-align_absolute-center">
+        <template if:true={products}>              
+            <c-codex-data-table class="slds-cell-edit" role="gridcell"
+                key-field="Id"
+                data={products}
+                columns={columns}
+                
+                onsave={handleSave}
+
+                draft-values={draftValues}>
+            </c-codex-data-table>
+        </template>
+    </div>
+</template>

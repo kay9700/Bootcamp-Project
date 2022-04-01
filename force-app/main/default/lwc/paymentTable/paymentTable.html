@@ -1,0 +1,15 @@
+<template>
+    <div class="slds-size_4-of-4 slds-align_absolute-center">         
+            <c-codex-data-table
+                key-field="Id"
+                data={payments}
+                columns={columns}>
+            </c-codex-data-table>
+
+
+            <div> {parentAmount}</div>
+            <div> {parentTerm}</div>
+            <div> {parentDownPayment}</div>
+        
+    </div>
+</template>

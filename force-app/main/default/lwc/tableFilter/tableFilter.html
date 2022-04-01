@@ -1,0 +1,18 @@
+<template>
+    <div class="slds-form-element">
+        <template if:true={brandValuesPicklist.data}>
+            <lightning-combobox name="Brand" label="Brand" value={valueBrand} options={brandValuesPicklist.data.values} onchange={handleBrandSelection}></lightning-combobox>
+       </template> 
+        <template if:true={modelValuesPicklist.data}>
+            <lightning-combobox name="Model" label="Model" value={valueModel} options={modelValuesPicklist.data.values} onchange={handleModelSelection}></lightning-combobox>
+       </template> 
+    
+        <lightning-button variant="brand-outline" label="Clear Search" title="Clean Search" onclick={handleFilter} class="slds-p-left_medium"></lightning-button>
+        <div class="slds-p-top_medium" >
+            <c-info-table
+            var-model={valueModel}
+            var-brand={valueBrand}
+            ></c-info-table>
+        </div>
+    </div>
+</template>

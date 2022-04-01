@@ -1,0 +1,11 @@
+<template>
+        <div class="slds-size_4-of-4 slds-align_absolute-center">
+            <template if:true={products}>              
+                <c-codex-data-table
+                    key-field="Id"
+                    data={products}
+                    columns={columns}>
+                </c-codex-data-table>
+            </template>
+        </div>  
+</template>

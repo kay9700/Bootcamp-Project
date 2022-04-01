@@ -1,0 +1,33 @@
+<template>
+    <div class="slds-form-element">
+        <div >
+            <template if:true={brandPicklist.data}>
+                <lightning-combobox name="valueBrand" label="Brand" value={valueBrand}
+                class="slds-col slds-size_5-of-12 slds-p-horizontal--small slds-m-bottom--medium"
+                    options={brandPicklist.data.values} onchange={handleChangeBrand}>
+                </lightning-combobox>
+            </template>
+            <template if:true={modelPicklist.data}>
+                <lightning-combobox name="valueModel" label="Model" value={valueModel}
+                class="slds-col slds-size_5-of-12 slds-p-horizontal--small slds-m-bottom--medium"
+                    options={modelPicklist.data.values} onchange={handleChangeModel}>
+                </lightning-combobox>
+            </template>   
+            
+            <div class="slds-col slds-size_5-of-12 slds-p-horizontal--small slds-m-bottom--medium">
+                <p><lightning-input label="Color" type="text" value={carColor} name="carColor" onchange={carHandleChange} required></lightning-input></p>
+            </div>         
+            <div class="slds-col slds-size_5-of-12 slds-p-horizontal--small slds-m-bottom--medium">
+                <p><lightning-input label="Price" type="Number" value={carPrice} name="carPrice" onchange={carHandleChange} required></lightning-input></p>
+            </div>
+            <lightning-input class="slds-p-horizontal--small" label="" name="file uploader" onchange={handleFilesChange} type="file">
+            </lightning-input>         
+             <br/> 
+             <div style="margin-left:34%">
+                <lightning-button class="slds-m-top--medium" label={UploadFile} onclick={handleSave}
+                    variant="brand" disabled={isTrue}></lightning-button>
+            </div>
+            
+       </div>
+    </div>
+</template>
