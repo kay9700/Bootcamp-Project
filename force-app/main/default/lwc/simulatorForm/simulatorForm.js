@@ -1,17 +1,14 @@
 import { LightningElement, track, wire, api } from 'lwc';
-import { getObjectInfo } from 'lightning/uiObjectInfoApi';
-import { getPicklistValues } from 'lightning/uiObjectInfoApi';
-import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
-import {exportCSVFile} from 'c/utils';
-
-import getCarsInfo from '@salesforce/apex/CarsController.getCarsInfo';
 import getProductInfo from '@salesforce/apex/CarsController.getProductInfo';
-
-import JSPDF from "@salesforce/resourceUrl/jspdf";
-import JSPDF_AUTO_TABLE from "@salesforce/resourceUrl/jspdfautotable";
 import { loadScript }  from "lightning/platformResourceLoader";
 
-//
+//Import js Libraries to help with the creation of the PDF and format the table
+import JSPDF from "@salesforce/resourceUrl/jspdf";
+import JSPDF_AUTO_TABLE from "@salesforce/resourceUrl/jspdfautotable";
+
+//import util tu generate the CSV
+import {exportCSVFile} from 'c/utils';
+
 export default class SimulatorForm extends LightningElement {
 
     renderedCallback() {
@@ -33,9 +30,11 @@ export default class SimulatorForm extends LightningElement {
     @track l_All_Types;
     @track modelOptions;
     @track Picklist_Value;
+    @track termPicklistValue
 
     @track downPayment;
     @track amount;
+    records = [];
 
     paymentHeaders = {
          pay: "# Pay",  
@@ -44,9 +43,7 @@ export default class SimulatorForm extends LightningElement {
          monthlyPaymentOfAutoInterest: "Monthly Payment of Auto Interest",
          totalPaymentWithVAT: "Total Payment with VAT",
     }
-    records = [];
-
-    @track termPicklistValue
+    
     termOptions = [
         {value: "0", label: "None"},
         {value: "6", label: "6 months"},
@@ -69,35 +66,39 @@ export default class SimulatorForm extends LightningElement {
                 options.push({ label: data[key].Model__c, value: data[key].Id  });
             }
             this.modelOptions = options;
-
         }
     }
 
     handleModelSelection(event){
         this.Picklist_Value = event.target.value; 
-
     }
-
     handleTermSelection(event){
         this.termPicklistValue = event.target.value; 
         console.log(this.termPicklistValue);
-        // Do Something.
     }
     handleAmountSelection(event){
         this.amount = event.target.value; 
         console.log(this.amount);
-        // Do Something.
     }
     handleDownPaymentSelection(event){
         this.downPayment = event.target.value; 
-        // Do Something.
     }
-
     handleCalculate() { 
         this.calculatePayment();
         this.showTable = true;
-
     }
+
+    handlePDF(event) {
+        this.generatePdf();
+        console.log("PDF GENERATED");
+    }
+
+    handleCSV() { 
+        var date = this.getDate();
+        var name = "Payment " + date;
+        exportCSVFile(this.paymentHeaders, this.records, name)
+    }
+
 
     calculatePayment() {
         var initialAmount = this.amount;
@@ -149,10 +150,7 @@ export default class SimulatorForm extends LightningElement {
         return dateTime;
     }
 
-    handlePDF(event) {
-        this.generatePdf();
-        console.log("PDF GENERATED");
-    }
+
 
     generatePdf() {
         const { jsPDF } = window.jspdf;
@@ -173,6 +171,7 @@ export default class SimulatorForm extends LightningElement {
             rows.push(temp);
           });
           console.log(rows);
+          //Creation and format the table
           doc.autoTable({
             head: [
               [
@@ -189,11 +188,5 @@ export default class SimulatorForm extends LightningElement {
           var name = "Payment - " + date + ".pdf";
           doc.save(name);
         }
-    }
-
-    handleCSV() { 
-        var date = this.getDate();
-        var name = "Payment " + date;
-        exportCSVFile(this.paymentHeaders, this.records, name)
     }
 }

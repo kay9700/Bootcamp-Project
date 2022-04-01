@@ -1,7 +1,4 @@
 import { LightningElement, track, wire, api } from 'lwc';
-import getCarsInfo from '@salesforce/apex/CarsController.getCarsInfo';
-//import SIMULATOR_INFO from '@salesforce'
-
 
 export default class PaymentTable extends LightningElement {
     @api parentAmount;
@@ -17,34 +14,4 @@ export default class PaymentTable extends LightningElement {
         { label: 'Monthly Payment of Auto Interest', fieldName: 'monthlyPaymentOfAutoInterest', type: 'currency' },
         { label: 'Total Payment with VAT', fieldName: 'totalPaymentWithVAT', type: 'currency' },
     ];
-
-
-    /*
-    @wire(getPaymentsList) 
-    WiredPayments( { error, data }) { 
-        if(data) { 
-
-        }
-    }
-    
-
-    
-    @track products
-    @track error;
-    @wire(getCarsInfo) wiredAccounts({data, error}){ 
-        if(data) { 
-            this.products = data.map(row=>{ 
-                return{...row,
-                    productModel: row.Product2.Model__c,
-                    productBrand: row.Product2.Brand__c,
-                    productColor: row.Product2.Color__c,
-                    productImage:row.Product2.Image_URL__c,
-                    }
-                }
-            );
-            console.log(data);
-        }else if (error) { 
-            console.log(error);
-        }
-    }*/
 }

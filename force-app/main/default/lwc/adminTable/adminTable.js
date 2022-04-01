@@ -1,18 +1,7 @@
 import { LightningElement, track, wire, api } from 'lwc';
-import getCarsInfo from '@salesforce/apex/CarsController.getCarsInfo';
-import getProductInfo from '@salesforce/apex/CarsController.getProductInfo';
 import getProductInAdmin from '@salesforce/apex/CarsController.getProductInAdmin'
 import updateProducts from '@salesforce/apex/CarsController.updateProducts';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import { updateRecord } from 'lightning/uiRecordApi';
-
-import BRAND_FIELD from '@salesforce/schema/Product2.Brand__c';
-import MODEL_FIELD from '@salesforce/schema/Product2.Model__c';
-import COLOR_FIELD from '@salesforce/schema/Product2.Color__c';
-import PRICE_FIELD from '@salesforce/schema/Product2.Price__c';
-import ISACTIVE_FIELD from '@salesforce/schema/Product2.IsActive';
-
-import PRODUCT_OBJECT from '@salesforce/schema/Product2';
 
 const columns = [
     {
@@ -64,16 +53,6 @@ export default class AdminTable extends LightningElement {
     @wire(getProductInAdmin) wiredProducts({data, error}){ 
         if(data) { 
             this.products = data;
-            /* .map(row=>{ 
-                return{...row,
-                    productModel: row.Product2.Model__c,
-                    productBrand: row.Product2.Brand__c,
-                    productColor: row.Product2.Color__c,
-                    productImage:row.Product2.Image_URL__c,
-                    productIsActive: row.Product2.IsActive,
-                    }
-                }
-            ); */
             console.log(data);
         }else if (error) { 
             console.log(error);

@@ -7,10 +7,6 @@ import PRODUCT_OBJECT from "@salesforce/schema/Product2";
 import BRAND_FIELD from "@salesforce/schema/Product2.Brand__c";
 import MODEL_FIELD from "@salesforce/schema/Product2.Model__c";
 
-import PRICEBOOK_OBJECT from '@salesforce/schema/PricebookEntry';
-import PRODUCTID_FIELD from '@salesforce/schema/PricebookEntry.Product2Id';
-import PRICEBOOKID_FIELD from '@salesforce/schema/PricebookEntry.Pricebook2Id';
-
 const columns = [{ label: "Title", fieldName: "Title" }];
 
 export default class AdminCreateRecordForm extends LightningElement {
@@ -36,6 +32,7 @@ export default class AdminCreateRecordForm extends LightningElement {
     @track valueBrand = "";
     @track valueModel = "";
 
+    //Getting the object info, the picklist values.
     @wire(getObjectInfo, { objectApiName: PRODUCT_OBJECT })
     productMetadata;
     
@@ -78,6 +75,7 @@ export default class AdminCreateRecordForm extends LightningElement {
         }
     }
 
+    //Suposed to tell us if the upload was successfully.
     handleSave() {
         const alert = new ShowToastEvent({
             title:'Success',
@@ -116,45 +114,45 @@ export default class AdminCreateRecordForm extends LightningElement {
         this.fileReader.readAsDataURL(this.file);
     }
 
-     // Calling apex class to insert the file
-  saveToFile() {
-    saveFile({
-      strFileName: this.file.name,
-      base64Data: encodeURIComponent(this.fileContents),
-      carBrand: this.valueBrand,
-      carModel: this.valueModel,
-      carColor: this.carColor,
-      carPrice: this.carPrice,
-    })
-      .then((result) => {
-        window.console.log("result ====> " + result);
-        // refreshing the datatable
-
-        this.fileName = this.fileName + " - Uploaded Successfully";
-        this.UploadFile = "Record Uploaded Successfully";
-        this.isTrue = true;
-        this.showLoadingSpinner = false;
-
-        // Showing Success message after file insert
-        this.dispatchEvent(
-          new ShowToastEvent({
-            title: "Success!!",
-            message: this.file.name + " - Uploaded Successfully!!!",
-            variant: "success",
-          })
-        );
+  // Calling apex class to insert the file
+    saveToFile() {
+      saveFile({
+        strFileName: this.file.name,
+        base64Data: encodeURIComponent(this.fileContents),
+        carBrand: this.valueBrand,
+        carModel: this.valueModel,
+        carColor: this.carColor,
+        carPrice: this.carPrice,
       })
-      .catch((error) => {
-        // Showing errors if any while inserting the files
-        window.console.log(error);
-        this.dispatchEvent(
-          new ShowToastEvent({
-            title: "Error while uploading File",
-            message: error.message,
-            variant: "error",
-          })
-        );
-      });
+        .then((result) => {
+          window.console.log("result ====> " + result);
+          // refreshing the datatable
+
+          this.fileName = this.fileName + " - Uploaded Successfully";
+          this.UploadFile = "Record Uploaded Successfully";
+          this.isTrue = true;
+          this.showLoadingSpinner = false;
+
+          // Showing Success message after file insert
+          this.dispatchEvent(
+            new ShowToastEvent({
+              title: "Success!!",
+              message: this.file.name + " - Uploaded Successfully!!!",
+              variant: "success",
+            })
+          );
+        })
+        .catch((error) => {
+          // Showing errors if any while inserting the files
+          window.console.log(error);
+          this.dispatchEvent(
+            new ShowToastEvent({
+              title: "Error while uploading File",
+              message: error.message,
+              variant: "error",
+            })
+          );
+        });
     }
 
     // Getting selected rows to perform any action
@@ -164,11 +162,10 @@ export default class AdminCreateRecordForm extends LightningElement {
         conDocIds = new Set();
         // Display that fieldName of the selected rows
         for (let i = 0; i < selectedRows.length; i++) {
-        conDocIds.add(selectedRows[i].ContentDocumentId);
+          conDocIds.add(selectedRows[i].ContentDocumentId);
         }
 
         this.selectedRecords = Array.from(conDocIds).join(",");
-
         window.console.log("selectedRecords =====> " + this.selectedRecords);
     }
 }

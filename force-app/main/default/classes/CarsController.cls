@@ -1,5 +1,7 @@
 public with sharing class CarsController {
     
+    //getting information of the product through the relation in pricebook entry.
+    //used before the adition of a custom price field in object product. 
     @AuraEnabled(cacheable=True)
     public static List<PricebookEntry> getCarsInfo() {
         List<PricebookEntry> carsInfo = [SELECT Id, Product2Id, Product2.Name, Product2.IsActive, 
@@ -11,6 +13,7 @@ public with sharing class CarsController {
         return carsInfo;
     }
 
+    //getting information of the product directly.
     @AuraEnabled(cacheable=True)
     public static List<Product2> getProductInfo() {
         List<Product2> carsInfo = [SELECT Id, Name, IsActive, Brand__c, Model__c, Price__c, Color__c, Image_URL__c                                           
@@ -20,6 +23,7 @@ public with sharing class CarsController {
         return carsInfo;
     }
 
+    //getting information of the product for admin. He´s allowed to see all the product, not just the active ones
     @AuraEnabled(cacheable=True)
     public static List<Product2> getProductInAdmin() {
         List<Product2> carsInfo = [SELECT Id, Name, IsActive, Brand__c, Model__c, Price__c, Color__c, Image_URL__c                                           
@@ -28,9 +32,9 @@ public with sharing class CarsController {
         return carsInfo;
     }
 
+    //allows me tu update values in the lightning datatale inline editing
     @AuraEnabled
-    public static string updateProducts( Object data ) {
-        
+    public static string updateProducts( Object data ) {   
         List < Product2 > productsUpdate = ( List < Product2 > ) JSON.deserialize(
             JSON.serialize( data ),
             List < Product2 >.class
@@ -44,6 +48,7 @@ public with sharing class CarsController {
         }
     }
 
+    //Dinamic query, used to filter based on the input parameters.
     @AuraEnabled(cacheable=true)
     public static List<PricebookEntry> findProduct(String searchModel, String searchBrand){
 

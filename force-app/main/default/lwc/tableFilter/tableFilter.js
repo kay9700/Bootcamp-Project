@@ -1,5 +1,4 @@
 import { LightningElement, wire, track, api } from 'lwc';
-import getCarsInfo from '@salesforce/apex/CarsController.getCarsInfo';
 import BRAND_FIELD from '@salesforce/schema/Product2.Brand__c';
 import MODEL_FIELD from '@salesforce/schema/Product2.Model__c';
 import PRODUCT_OBJECT from '@salesforce/schema/Product2';
@@ -48,6 +47,7 @@ export default class TableFilter extends LightningElement {
         this.valueBrand = event.target.value;
     }
 
+    //reset the values from the filter
     handleFilter(event) {
         this.valueModel = '';
         this.valueBrand = '';
